@@ -28,7 +28,7 @@ export default function App() {
   // One-tap USDC payment using the pay() function
   const handlePayment = async (): Promise<void> => {
     try {
-      // @ts-expect-error
+      // @ts-expect-error this is a bug in the account sdk
       const { id } = await pay({
         amount: '0.01', // USD – SDK quotes equivalent USDC
         to: '0x0000000000000000000000000000000000000001', // Replace with your recipient address
