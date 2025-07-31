@@ -1,34 +1,22 @@
+
 "use client";
 
 import React, { useState } from 'react';
-import { createBaseAccountSDK, pay, getPaymentStatus } from '@base-org/account';
-import { SignInWithBaseButton, BasePayButton } from '@base-org/account-ui/react';
+import { pay, getPaymentStatus } from '@base-org/account';
+import { BasePayButton } from '@base-org/account-ui/react';
 
 export default function App() {
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
   const [paymentStatus, setPaymentStatus] = useState<string>('');
   const [paymentId, setPaymentId] = useState<string>('');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   // Initialize SDK
-  const sdk = createBaseAccountSDK({
-    appName: 'Base Account Quick-start'
-  });
-
-  // Optional sign-in step – not required for `pay()`, but useful to get the user address
-  const handleSignIn = async (): Promise<void> => {
-    try {
-      await sdk.getProvider().request({ method: 'wallet_connect' });
-      setIsSignedIn(true);
-    } catch (error) {
-      console.error('Sign in failed:', error);
-    }
-  };
+  
 
   // One-tap USDC payment using the pay() function
   const handlePayment = async (): Promise<void> => {
     try {
-      // @ts-expect-error this is a bug in the account sdk
+      //@ts-expect-error - id is not a property of the paymentResult
       const { id } = await pay({
         amount: '0.01', // USD – SDK quotes equivalent USDC
         to: '0x0000000000000000000000000000000000000001', // Replace with your recipient address
@@ -134,20 +122,6 @@ export default function App() {
         <p style={styles.subtitle}>Experience seamless crypto payments</p>
         
         <div style={styles.buttonGroup}>
-          <SignInWithBaseButton 
-            align="center"
-            variant="solid"
-            colorScheme={theme}
-            size="medium"
-            onClick={handleSignIn}
-          />
-          
-          {isSignedIn && (
-            <div style={styles.signInStatus}>
-              ✅ Connected to Base Account
-            </div>
-          )}
-          
           <BasePayButton 
             colorScheme={theme}
             onClick={handlePayment}
