@@ -28,11 +28,13 @@ export default function App() {
   // One-tap USDC payment using the pay() function
   const handlePayment = async (): Promise<void> => {
     try {
+      // @ts-expect-error
       const { id } = await pay({
         amount: '0.01', // USD – SDK quotes equivalent USDC
         to: '0x0000000000000000000000000000000000000001', // Replace with your recipient address
         testnet: true // set to false or omit for Mainnet
       });
+      console.log(id)
 
       setPaymentId(id);
       setPaymentStatus('Payment initiated! Click "Check Status" to see the result.');
